@@ -2,6 +2,25 @@ import shutil
 import json
 import os
 import streamlit as st
+
+# --- CORRECTION POUR STREAMLIT CLOUD (GEMINI) ---
+config_dir = os.path.expanduser("~/.config/fabric")
+os.makedirs(config_dir, exist_ok=True)
+env_path = os.path.join(config_dir, ".env")
+
+if not os.path.exists(env_path):
+    with open(env_path, "w") as f:
+        # Copie la clé Google/Gemini depuis les Secrets Streamlit
+        if "GOOGLE_API_KEY" in st.secrets:
+            f.write(f'GOOGLE_API_KEY="{st.secrets["GOOGLE_API_KEY"]}"\n')
+        else:
+            f.write('GOOGLE_API_KEY=""\n')
+        
+        # Définit Google (Gemini) comme fournisseur par défaut
+        f.write('DEFAULT_VENDOR="Google"\n')
+# ---------------------------------------
+
+import streamlit as st
 from subprocess import run, CalledProcessError
 from dotenv import load_dotenv
 import re
