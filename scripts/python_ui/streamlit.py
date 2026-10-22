@@ -2,19 +2,23 @@ import shutil
 import json
 import os
 
-# --- CORRECTION POUR RENDER (VARIABLES D'ENVIRONNEMENT) ---
+# --- CORRECTION POUR RENDER (.ENV SANS GUILLEMETS) ---
 config_dir = os.path.expanduser("~/.config/fabric")
 os.makedirs(config_dir, exist_ok=True)
 env_path = os.path.join(config_dir, ".env")
 
-if not os.path.exists(env_path):
-    with open(env_path, "w") as f:
-        # Lit la clé directement depuis les paramètres de Render
-        google_key = os.environ.get("GOOGLE_API_KEY", "")
-        if google_key:
-            f.write(f'GOOGLE_API_KEY="{google_key}"\n')
-        
-        f.write('DEFAULT_VENDOR="Google"\n')
+# On récupère la clé depuis Render
+google_key = os.environ.get("GOOGLE_API_KEY", "")
+
+# On recrée toujours le fichier au démarrage pour qu'il soit à jour
+with open(env_path, "w") as f:
+    if google_key:
+        f.write(f"GOOGLE_API_KEY={google_key}\n")
+        print("✅ Clé Google trouvée et ajoutée au fichier .env !")
+    else:
+        print("❌ ATTENTION : La clé GOOGLE_API_KEY est introuvable sur Render.")
+    
+    f.write("DEFAULT_VENDOR=Google\n")
 # ----------------------------------------------------------
 
 import streamlit as st
