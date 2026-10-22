@@ -2,7 +2,7 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "services": {
     "python_ui": {
-      "root": "scripts/python_ui",
+      "root": "scripts/python_ui/streamlit.py",
       "runtime": "python"
     },
     "web": {
