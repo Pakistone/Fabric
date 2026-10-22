@@ -1,22 +1,21 @@
 {
-  "builds": [
-    {
-      "src": "scripts/python_ui/**/*.py",
-      "use": "@vercel/python"
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "python_ui": {
+      "root": "scripts/python_ui",
+      "runtime": "python"
     },
-    {
-      "src": "web/package.json",
-      "use": "@vercel/static-build"
+    "web": {
+      "root": "web",
+      "framework": "sveltekit-1"
     }
-  ],
-  "routes": [
+  },
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "/scripts/python_ui/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/web/$1"
+      "source": "/(.*)",
+      "destination": {
+        "service": "web"
+      }
     }
   ]
 }
